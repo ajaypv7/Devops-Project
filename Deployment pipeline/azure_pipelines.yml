@@ -23,11 +23,8 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          az deployment group create \
-            --name infra-deployment \
-            --resource-group $(resourceGroup) \
-            --template-file $(Build.SourcesDirectory)/infra/main.bicep \
-            --parameters @$(Build.SourcesDirectory)/infra/parameters.json
+          az deployment group create --resource-group myResourceGroup --template-file main.bicep --parameters main.bicepparam
+
 
 - stage: Deploy_Application
   jobs:
