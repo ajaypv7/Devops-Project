@@ -1,0 +1,34 @@
+trigger:
+- main
+
+resources:
+- repo: self
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: |
+    echo Building Java Backend...
+    ./mvnw clean package
+  displayName: 'Build Java App'
+
+- script: |
+    echo Running Tests...
+    ./mvnw test
+  displayName: 'Test Java App'
+
+- script: |
+    echo Building Docker Image...
+    docker build -t myapp/backend:$(Build.BuildId) .
+  displayName: 'Docker Build'
+
+- script: |
+    echo Pushing to Container Registry...
+    docker push myapp/backend:$(Build.BuildId)
+  displayName: 'Docker Push'
+
+- script: |
+    echo Deploying to Azure...
+    # Add deployment scripts here
+  displayName: 'Deploy to Azure'
