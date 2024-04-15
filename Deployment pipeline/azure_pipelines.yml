@@ -1,1 +1,45 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - script: echo "Build application..."
+      displayName: 'Build'
+
+- stage: Deploy_Infrastructure
+  jobs:
+  - job: DeployInfraJob
+    steps:
+    - checkout: none
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Your-Azure-Service-Connection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment group create \
+            --name infra-deployment \
+            --resource-group $(resourceGroup) \
+            --template-file $(Build.SourcesDirectory)/infra/main.bicep \
+            --parameters @$(Build.SourcesDirectory)/infra/parameters.json
+
+- stage: Deploy_Application
+  jobs:
+  - job: DeployAppJob
+    steps:
+    - script: echo "Deploy application..."
+      displayName: 'Deploy'
+
+- stage: Monitor_Audit
+  jobs:
+  - job: MonitorAuditJob
+    steps:
+    - script: echo "Set up monitoring and auditing..."
+      displayName: 'Monitor and Audit'
 
