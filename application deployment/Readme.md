@@ -1,4 +1,4 @@
-To set up a CI/CD pipeline for an application with a Java backend and a React frontend, you’ll need to create two separate pipelines: one for the backend and one for the frontend. Each pipeline will build, test, containerize, and deploy its respective part of the application. Here’s a high-level overview of what each pipeline will do:
+# To set up a CI/CD pipeline for an application with a Java backend and a React frontend, you’ll need to create two separate pipelines: one for the backend and one for the frontend. Each pipeline will build, test, containerize, and deploy its respective part of the application. Here’s a high-level overview of what each pipeline will do:
 
 Backend Pipeline (Java)
 Source Code Checkout: Pull the latest code from the repository branch designated for the backend.
