@@ -1,0 +1,35 @@
+trigger:
+- main
+
+resources:
+- repo: self
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: |
+    echo Building React Frontend...
+    npm install
+    npm run build
+  displayName: 'Build React App'
+
+- script: |
+    echo Running Tests...
+    npm test
+  displayName: 'Test React App'
+
+- script: |
+    echo Building Docker Image...
+    docker build -t myapp/frontend:$(Build.BuildId) .
+  displayName: 'Docker Build'
+
+- script: |
+    echo Pushing to Container Registry...
+    docker push myapp/frontend:$(Build.BuildId)
+  displayName: 'Docker Push'
+
+- script: |
+    echo Deploying to Azure...
+    # Add deployment scripts here
+  displayName: 'Deploy to Azure'
