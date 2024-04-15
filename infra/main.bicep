@@ -1,8 +1,10 @@
-param location string = 'East US'
-param appName string = 'mywebapp'
-param dbName string = 'mydb'
-param storageAccountName string = 'mystorageaccount'
-param functionAppName string = 'myfunctionapp'
+param location string
+param appName string 
+param dbName string 
+param sqlAdministratorLogin string
+param sqlAdministratorPassword string
+param storageAccountName string 
+param functionAppName string 
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-03-01' = {
   name: '${appName}-plan'
@@ -25,8 +27,8 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
   name: 'mydbserver'
   location: location
   properties: {
-    administratorLogin: 'sqladmin'
-    administratorLoginPassword: 'MyComplexPassword!'
+    administratorLogin: sqlAdministratorLogin
+    administratorLoginPassword: sqlAdministratorPassword
   }
 }
 
