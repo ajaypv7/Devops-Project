@@ -45,3 +45,38 @@ Refer to the 'Architecture.md' file in the root of the repository for a high-lev
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 **Note**: Ensure that all sensitive information such as passwords and connection strings are stored securely, preferably in Azure Key Vault, and referenced in the Bicep templates and application configuration.
+
+# Cloud Architecture for Application Deployment
+
+## Architecture Overview
+
+This document outlines the cloud architecture designed to deploy and manage the application on Azure.
+
+### Components
+
+- **Azure App Service**: Hosts the web application.
+- **Azure SQL Database**: Provides a managed database service for the application.
+- **Azure Functions**: Runs serverless compute for background tasks.
+- **Azure Storage**: Stores application files and data.
+
+### Scalability
+
+The infrastructure is designed to scale automatically using Azure's Autoscale feature, which adjusts resources based on load.
+
+## Monitoring and Auditing
+
+- **Azure Monitor**: Collects and analyzes performance metrics and logs.
+- **Azure Policy**: Enforces organizational standards and assesses compliance.
+
+## Personal Account Management
+
+Personal accounts are managed through Azure Active Directory, providing secure access to the application.
+
+## Deployment Pipeline
+
+The `azure-pipelines.yml` file defines the CI/CD process, which includes stages for building, deploying, and monitoring the application.
+
+## Conclusion
+
+The architecture is designed to be robust, scalable, and compliant with organizational policies.
+
