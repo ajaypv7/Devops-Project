@@ -91,13 +91,6 @@ stages:
         inlineScript: |
           # Add commands to configure AAD
 
-    - task: AzureCLI@2
-      displayName: 'Enable Autoscaling on AKS'
-      inputs:
-        azureSubscription: $(azureServiceConnection)
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
-          # Add commands to enable autoscaling on AKS
+   
 
    
