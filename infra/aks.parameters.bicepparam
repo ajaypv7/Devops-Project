@@ -11,3 +11,4 @@ param servicePrincipalClientSecret = 'your_secret_here'
 param enableAutoScaling = true
 param minCount = 1
 param maxCount = 5
+param logAnalyticsWorkspaceId 'your_WorkspaceId_here'
