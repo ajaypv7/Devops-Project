@@ -32,8 +32,8 @@ stages:
         inlineScript: |
           az deployment group create \
             --resource-group $(resourceGroupName) \
-            --template-file logAnalytics.bicep \
-            --parameters logAnalytics.parameters.bicepparam
+            --template-file "$(System.DefaultWorkingDirectory)/infra/bicep/logAnalytics.bicep" \
+            --parameters "infra/parameter/logAnalytics.parameters.bicepparam"
 
     - task: AzureCLI@2
       displayName: 'Deploy ACR using Bicep'
@@ -44,8 +44,8 @@ stages:
         inlineScript: |
           az deployment group create \
             --resource-group $(resourceGroupName) \
-            --template-file acr.bicep \
-            --parameters acr.parameters.bicepparam
+            --template-file "$(System.DefaultWorkingDirectory)/infra/bicep/acr.bicep" \
+            --parameters "infra/parameter/acr.parameters.bicepparam"
      
     - task: AzureCLI@2
       displayName: 'Deploy AKS using Bicep'
@@ -56,8 +56,8 @@ stages:
         inlineScript: |
           az deployment group create \
             --resource-group $(resourceGroupName) \
-            --template-file aks.bicep \
-            --parameters aks.parameters.bicepparam
+            --template-file "$(System.DefaultWorkingDirectory)/infra/bicep/aks.bicep" \
+            --parameters "infra/parameter/aks.parameters.bicepparam"
 
     - task: AzureCLI@2
       displayName: 'Deploy Azure SQL Database using Bicep'
@@ -68,8 +68,8 @@ stages:
         inlineScript: |
           az deployment group create \
             --resource-group $(resourceGroupName) \
-            --template-file sql.bicep \
-            --parameters sql.parameters.bicepparam
+            --template-file "$(System.DefaultWorkingDirectory)/infra/bicep/sql.bicep" \
+            --parameters "infra/parameter/sql.parameters.bicepparam"
 
     - task: AzureCLI@2
       displayName: 'Deploy Storage account to store Audit logs for Sql Server'
@@ -80,8 +80,8 @@ stages:
         inlineScript: |
           az deployment group create \
             --resource-group $(resourceGroupName) \
-            --template-file storageAccount.bicep
-            --parameters parameters.bicepparam
+            --template-file "$(System.DefaultWorkingDirectory)/infra/bicep/storageAccount.bicep" \
+            --parameters "infra/parameter/parameters.bicepparam"
 
     - task: AzureCLI@2
       displayName: 'Deploy Key vault to store storage account key'
@@ -92,8 +92,8 @@ stages:
         inlineScript: |
           az deployment group create \
             --resource-group $(resourceGroupName) \
-            --template-file keyVault.bicep
-            --parameters parameters.bicepparam
+            --template-file "$(System.DefaultWorkingDirectory)/infra/bicep/keyVault.bicep" \
+            --parameters "infra/parameter/parameters.bicepparam"
 
     - task: AzureCLI@2
       displayName: 'set up server-level auditing to write audit logs to a storage account'
@@ -104,8 +104,8 @@ stages:
         inlineScript: |
           az deployment group create \
             --resource-group $(resourceGroupName) \
-            --template-file sqlAuditing.bicep
-            --parameters parameters.bicepparam
+            --template-file "$(System.DefaultWorkingDirectory)/infra/bicep/sqlAuditing.bicep" \
+            --parameters "infra/parameter/parameters.bicepparam"
 
     - task: AzureCLI@2
       displayName: 'Configure Azure Active Directory'
