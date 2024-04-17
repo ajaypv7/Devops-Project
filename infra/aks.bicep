@@ -9,6 +9,7 @@ param servicePrincipalClientSecret string
 param enableAutoScaling bool
 param minCount int
 param maxCount int
+param logAnalyticsWorkspaceId string
 
 resource aksCluster 'Microsoft.ContainerService/managedClusters@2024-01-02-preview' = {
   name: aksName
@@ -29,6 +30,14 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2024-01-02-previ
     servicePrincipalProfile: {
       clientId: servicePrincipalClientId
       secret: servicePrincipalClientSecret
+    }
+    addonProfiles: {
+      omsAgent: {
+        enabled: true
+        config: {
+          logAnalyticsWorkspaceResourceID: logAnalyticsWorkspaceId
+        }
+      }
     }
   }
 }
