@@ -9,9 +9,9 @@ This guide provides instructions on how to deploy the required infrastructure fo
 - A GitHub account (if the repository is hosted on GitHub).
 
 ## Repository Structure
-- `/pipelines`: Contains the Azure DevOps pipeline YAML files.
-- `/bicep`: Contains the Bicep templates for infrastructure as code.
-- `/src`: Contains the source code of the application.
+- `/infra`: Contains the Azure DevOps pipeline YAML files.
+- `/infra/bicep`: Contains the Bicep templates for infrastructure as code.
+- `/infra/parameter`: Contains the bicep parameters.
 
 ## Forking the Repository
 1. Navigate to the GitHub repository URL.
