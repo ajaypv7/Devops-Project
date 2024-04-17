@@ -1,0 +1,77 @@
+trigger:
+- main
+
+variables:
+  - group: 'azure-variables'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Deploy
+  jobs:
+  - job: DeployInfrastructure
+    displayName: 'Deploy Azure Infrastructure'
+    steps:
+    - checkout: self
+    - task: AzureCLI@2
+      displayName: 'Create Resource Group'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az group create --name $(resourceGroupName) --location $(location)
+
+    - task: AzureCLI@2
+      displayName: 'Deploy AKS using Bicep'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment group create \
+            --resource-group $(resourceGroupName) \
+            --template-file aks.bicep \
+            --parameters aks.parameters.bicepparam
+
+    - task: AzureCLI@2
+      displayName: 'Deploy Azure SQL Database using Bicep'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment group create \
+            --resource-group $(resourceGroupName) \
+            --template-file sql.bicep \
+            --parameters sql.parameters.json
+
+    - task: AzureCLI@2
+      displayName: 'Setup Azure Monitor and Policy'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment group create \
+            --resource-group $(resourceGroupName) \
+            --template-file monitor.bicep
+
+    - task: AzureCLI@2
+      displayName: 'Configure Azure Active Directory'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          # Add commands to configure AAD
+
+    - task: AzureCLI@2
+      displayName: 'Enable Autoscaling on AKS'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          # Add commands to enable autoscaling on AKS
