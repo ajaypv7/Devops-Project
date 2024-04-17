@@ -23,7 +23,7 @@ stages:
         inlineScript: |
           az group create --name $(resourceGroupName) --location $(location)
 
-		 - task: AzureCLI@2
+    - task: AzureCLI@2
       displayName: 'Deploy Log Analytics Workspace using Bicep'
       inputs:
         azureSubscription: $(azureServiceConnection)
