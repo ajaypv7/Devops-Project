@@ -9,7 +9,7 @@ This guide provides instructions on how to deploy the required infrastructure fo
 - A GitHub account (if the repository is hosted on GitHub).
 
 ## Repository Structure
-- `/infra`: Contains the Azure DevOps pipeline YAML files.
+- `/infra/azure_pipeline`: Contains the Azure DevOps pipeline YAML files to deploy the resources.
 - `/infra/bicep`: Contains the Bicep templates for infrastructure as code.
 - `/infra/parameter`: Contains the bicep parameters.
 
@@ -38,7 +38,9 @@ This guide provides instructions on how to deploy the required infrastructure fo
 
 ## Verifying the Deployment
  Once the pipeline runs successfully, check your Azure portal to verify that the resources are deployed.
-
+ 
+## Also I have created a pipeline to destroy the resources which was created as part of the project
+- `/infra/destroyinfra.yml`: Contains the Azure DevOps pipeline YAML files to delete the resources.
 
 ## Architecture Documentation
 Refer to the 'Architecture.md' file in the root of the repository for a high-level explanation of the overall architecture and the resources created.
