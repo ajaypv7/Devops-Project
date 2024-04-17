@@ -1,0 +1,60 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+- name: bicepParameters
+  value: 'bicepparam.json' # Assuming the parameters are stored in a JSON file
+
+steps:
+- checkout: self
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: '$(AzureSubscriptionName)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # Load parameters from the Bicep parameter file
+      params=$(cat $(bicepParameters))
+      resourceGroupName=$(echo $params | jq -r '.resourceGroupName')
+      aksName=$(echo $params | jq -r '.aksName')
+      sqlServerName=$(echo $params | jq -r '.sqlServerName')
+      sqlDatabaseName=$(echo $params | jq -r '.sqlDatabaseName')
+      containerRegistryName=$(echo $params | jq -r '.containerRegistryName')
+      logAnalyticsWorkspaceName=$(echo $params | jq -r '.logAnalyticsWorkspaceName')
+      storageAccountName=$(echo $params | jq -r '.storageAccountName')
+      keyVaultName=$(echo $params | jq -r '.keyVaultName')
+
+      # Delete resources
+      echo "Deleting Resource Group..."
+      az group delete --name $resourceGroupName --yes --no-wait
+      echo "Resource Group deleted."
+
+      echo "Deleting Azure Kubernetes Service..."
+      az aks delete --name $aksName --resource-group $resourceGroupName --yes --no-wait
+      echo "Azure Kubernetes Service deleted."
+
+      echo "Deleting Azure SQL Server and Database..."
+      az sql server delete --name $sqlServerName --resource-group $resourceGroupName --yes
+      az sql db delete --name $sqlDatabaseName --server $sqlServerName --resource-group $resourceGroupName --yes
+      echo "Azure SQL Server and Database deleted."
+
+      echo "Deleting Azure Container Registry..."
+      az acr delete --name $containerRegistryName --resource-group $resourceGroupName --yes
+      echo "Azure Container Registry deleted."
+
+      echo "Deleting Azure Log Analytics Workspace..."
+      az monitor log-analytics workspace delete --workspace-name $logAnalyticsWorkspaceName --resource-group $resourceGroupName --yes
+      echo "Azure Log Analytics Workspace deleted."
+
+      echo "Deleting Azure Storage Account..."
+      az storage account delete --name $storageAccountName --resource-group $resourceGroupName --yes --no-wait
+      echo "Azure Storage Account deleted."
+
+      echo "Deleting Azure Key Vault..."
+      az keyvault delete --name $keyVaultName --resource-group $resourceGroupName --yes
+      echo "Azure Key Vault deleted."
+  displayName: 'Cleanup Azure Resources'
