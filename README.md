@@ -29,16 +29,16 @@ This guide provides instructions on how to deploy the required infrastructure fo
 2. Click on 'Create pipeline'.
 3. Select 'GitHub' as the code repository and authenticate if required.
 4. Choose the repository you forked earlier.
-5. Select 'Existing Azure Pipelines YAML file' and point to the YAML file in the `/pipelines` directory.
+5. Select 'Existing Azure Pipelines YAML file' and point to the YAML file in the `/infra` directory.
 6. Run the pipeline to build and deploy your application and infrastructure.
 
 ## Deploying the Infrastructure
-1. The pipeline will automatically deploy the infrastructure defined in the Bicep templates located in the `/bicep` directory.
+1. The pipeline will automatically deploy the infrastructure defined in the Bicep templates located in the `/infra` directory.
 2. Monitor the pipeline's progress and review the logs to ensure everything is deploying correctly.
 
 ## Verifying the Deployment
-1. Once the pipeline runs successfully, check your Azure portal to verify that the resources are deployed.
-2. Connect to the Azure SQL Database using the connection string provided in the Azure portal.
+ Once the pipeline runs successfully, check your Azure portal to verify that the resources are deployed.
+
 
 ## Architecture Documentation
 Refer to the 'Architecture.md' file in the root of the repository for a high-level explanation of the overall architecture and the resources created.
@@ -54,10 +54,12 @@ This document outlines the cloud architecture designed to deploy and manage the 
 
 ### Components
 
-- **Azure App Service**: Hosts the web application.
+- **Resource Group**: A container that holds related resources for an Azure solution.
 - **Azure SQL Database**: Provides a managed database service for the application.
-- **Azure Functions**: Runs serverless compute for background tasks.
-- **Azure Storage**: Stores application files and data.
+- **Azure Kubernetes Service (AKS)**: To manage Docker containers.
+- **Azure Container Registry (ACR)**: To store Docker container images.
+- **Key Vaults**: For Storing Secrets.
+- **Azure Storage**: Store Sql Logs.
 
 ### Scalability
 
@@ -67,6 +69,7 @@ The infrastructure is designed to scale automatically using Azure's Autoscale fe
 
 - **Azure Monitor**: Collects and analyzes performance metrics and logs.
 - **Azure Policy**: Enforces organizational standards and assesses compliance.
+- **Log Analytics workspace**: For monitoring Azure Kubernetes Service (AKS).
 
 ## Personal Account Management
 
