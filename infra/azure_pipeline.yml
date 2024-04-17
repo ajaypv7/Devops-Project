@@ -69,10 +69,10 @@ stages:
           az deployment group create \
             --resource-group $(resourceGroupName) \
             --template-file sql.bicep \
-            --parameters sql.parameters.json
+            --parameters sql.parameters.bicepparam
 
     - task: AzureCLI@2
-      displayName: 'Setup Azure Monitor and Policy'
+      displayName: 'Deploy Storage account to store Audit logs for Sql Server'
       inputs:
         azureSubscription: $(azureServiceConnection)
         scriptType: 'bash'
@@ -80,7 +80,32 @@ stages:
         inlineScript: |
           az deployment group create \
             --resource-group $(resourceGroupName) \
-            --template-file monitor.bicep
+            --template-file storageAccount.bicep
+            --parameters parameters.bicepparam
+
+    - task: AzureCLI@2
+      displayName: 'Deploy Key vault to store storage account key'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment group create \
+            --resource-group $(resourceGroupName) \
+            --template-file keyVault.bicep
+            --parameters parameters.bicepparam
+
+    - task: AzureCLI@2
+      displayName: 'set up server-level auditing to write audit logs to a storage account'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment group create \
+            --resource-group $(resourceGroupName) \
+            --template-file sqlAuditing.bicep
+            --parameters parameters.bicepparam
 
     - task: AzureCLI@2
       displayName: 'Configure Azure Active Directory'
