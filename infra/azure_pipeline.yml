@@ -75,3 +75,15 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           # Add commands to enable autoscaling on AKS
+
+    - task: AzureCLI@2
+      displayName: 'Deploy Log Analytics Workspace using Bicep'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment group create \
+            --resource-group $(resourceGroupName) \
+            --template-file logAnalytics.bicep \
+            --parameters logAnalytics.parameters.bicepparam
